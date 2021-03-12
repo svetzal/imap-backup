@@ -24,8 +24,13 @@ msg_no_from_but_sender = <<~NOT_SENDER
   Delivered-To: you@example.com
   To: FirstName LastName <you@example.com>
   Subject: Re: no subject
-  Sender: FistName LastName <me@example.com>
+  Sender: FirstName LastName <me@example.com>
 NOT_SENDER
+
+msg_from_q_encoded = <<~FROM_Q_ENCODING.force_encoding("ASCII-8BIT")
+  From: =?iso-8859-1?Q?g=E4stebuch=40beispiel=2Ede?= <gaestebuch@beispiel.de>
+  Sender: FirstName LastName <me@example.com>
+FROM_Q_ENCODING
 
 describe Email::Mboxrd::Message do
   subject { described_class.new(message_body) }
@@ -138,6 +143,14 @@ describe Email::Mboxrd::Message do
 
       it "Sender is used as 'from'" do
         expect(subject.to_serialized).to start_with("From #{from}\n")
+      end
+    end
+
+    context "with Q-encoded from" do
+      let(:message_body) { msg_from_q_encoded }
+
+      it "handles the encoding" do
+        subject.to_serialized
       end
     end
   end

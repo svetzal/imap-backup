@@ -19,7 +19,7 @@ module Email::Mboxrd
     end
 
     def initialize(supplied_body)
-      @supplied_body = supplied_body.clone
+      @supplied_body = supplied_body.clone.force_encoding("UTF-8")
     end
 
     def to_serialized
