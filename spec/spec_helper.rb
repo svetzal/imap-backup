@@ -12,4 +12,4 @@ SimpleCov.command_name "RSpec tests"
 require "imap/backup"
 require "imap/backup/cli"
 
-silence_logging
+# silence_logging

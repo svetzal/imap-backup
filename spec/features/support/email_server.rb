@@ -4,7 +4,7 @@ module EmailServerHelpers
 
   def send_email(folder, options)
     message = message_as_server_message(options)
-    imap.append(folder, message, nil, nil)
+    imap.append(folder, message, nil, Time.now)
   end
 
   def message_as_server_message(options)

@@ -3,7 +3,7 @@ require "rspec/core/rake_task"
 require "rubocop/rake_task"
 
 RSpec::Core::RakeTask.new do |t|
-  t.pattern = "spec/**/*_spec.rb"
+  t.pattern = "spec/features/*_spec.rb"
 end
 
 desc "Run RSpec examples, excluding ones relying on Docker IMAP"
