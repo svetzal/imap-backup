@@ -78,6 +78,24 @@ RSpec.describe "backup", type: :aruba, docker: true do
       it "downloads messages" do
         expect(mbox_content(folder)).to eq(messages_as_mbox)
       end
+
+      it "creates a metadata file" do
+        expect(imap_parsed(folder)).to be_a Hash
+      end
+
+      context "when a renamed local backup exists" do
+        let!(:pre) do
+          super()
+          create_directory local_backup_path
+          File.write(imap_path(renamed_folder), "existing imap")
+          File.write(mbox_path(renamed_folder), "existing mbox")
+        end
+
+        it "moves the old backup to a uniquely named directory" do
+          renamed = "#{folder}-#{original_folder_uid_validity}-1"
+          expect(mbox_content(renamed)).to eq(message_as_mbox_entry(msg3))
+        end
+      end
     end
   end
 end
