@@ -13,7 +13,8 @@ module Imap::Backup
     no_commands do
       def run
         each_connection(account_names) do |connection|
-          connection.status
+          stats = connection.status
+          puts "stats: #{stats.inspect}"
         end
       end
     end

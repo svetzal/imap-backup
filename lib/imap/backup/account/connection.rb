@@ -29,7 +29,8 @@ module Imap::Backup
     def status
       ensure_account_folder
       backup_folders.map do |folder|
-        puts "folder.uids: #{folder.uids.inspect}"
+        s = Serializer.new(account.local_path, folder.name)
+        {name: folder.name, local: s.uids, remote: folder.uids}
       end
     end
 
