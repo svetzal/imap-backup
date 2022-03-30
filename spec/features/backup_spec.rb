@@ -48,5 +48,36 @@ RSpec.describe "backup", type: :aruba, docker: true do
     it "records uid_validity" do
       expect(imap_metadata[:uid_validity]).to eq(server_uid_validity(folder))
     end
+
+    context "when uid_validity does not match" do
+      let(:new_name) { "NEWNAME" }
+      let(:original_folder_uid_validity) { server_uid_validity(folder) }
+      let(:connection) { Imap::Backup::Account::Connection.new(account) }
+      let!(:pre) do
+        server_create_folder folder
+        send_email folder, msg3
+        original_folder_uid_validity
+        connection.run_backup
+        connection.disconnect
+        server_rename_folder folder, new_name
+      end
+      let(:renamed_folder) { "#{folder}-#{original_folder_uid_validity}" }
+
+      after do
+        server_delete_folder new_name
+      end
+
+      it "renames the old backup" do
+        expect(mbox_content(renamed_folder)).to eq(message_as_mbox_entry(msg3))
+      end
+
+      it "renames the old metadata file" do
+        expect(imap_parsed(renamed_folder)).to be_a Hash
+      end
+
+      it "downloads messages" do
+        expect(mbox_content(folder)).to eq(messages_as_mbox)
+      end
+    end
   end
 end
