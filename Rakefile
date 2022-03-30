@@ -15,4 +15,3 @@ end
 RuboCop::RakeTask.new
 
 task default: :spec
-task default: :rubocop
