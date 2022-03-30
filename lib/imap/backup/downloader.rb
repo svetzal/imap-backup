@@ -14,8 +14,6 @@ module Imap::Backup
     end
 
     def run
-      puts "uids: #{uids.inspect}"
-      return
       debug "#{uids.count} new messages"
 
       uids.each_slice(multi_fetch_size).with_index do |block, i|
