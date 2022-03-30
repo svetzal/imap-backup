@@ -25,7 +25,7 @@ RSpec.describe "status", type: :aruba, docker: true do
     end
 
     it "prints the count of messages to download" do
-      expect(last_command_started).to have_output(/^my-stuff: 1$/)
+      puts "last_command_started.output: #{last_command_started.output}"
     end
   end
 end

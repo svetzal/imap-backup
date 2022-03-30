@@ -13,12 +13,7 @@ module Imap::Backup
     no_commands do
       def run
         each_connection(account_names) do |connection|
-          Kernel.puts connection.account.username
-          folders = connection.status
-          folders.each do |f|
-            missing_locally = f[:remote] - f[:local]
-            Kernel.puts "#{f[:name]}: #{missing_locally.size}"
-          end
+          connection.status
         end
       end
     end
